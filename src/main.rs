@@ -6,7 +6,7 @@
 
 use core::panic::PanicInfo;
 mod vga_buffer;
-
+mod serial;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u32)]
