@@ -1,5 +1,8 @@
-#![no_std]
 #![no_main]
+#![no_std]
+#![feature(custom_test_frameworks)]
+#![test_runner(crate::test_runner)]
+#![reexport_test_harness_main = "test_main"]
 
 use core::panic::PanicInfo;
 mod vga_buffer;
@@ -10,12 +13,28 @@ fn panic(info: &PanicInfo) -> ! {
     loop {}
 }
 
+#[cfg(test)]
+pub fn test_runner(tests: &[&dyn Fn()]) {
+    println!("Running {} tests", tests.len());
+    for test in tests {
+        test();
+    }
+}
+
+#[test_case]
+fn trivial_assertion() {
+    print!("trivial assertion... ");
+    assert_eq!(1, 1);
+    println!("[ok]");
+}
+
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     println!("Hello, world{}", '!');
     println!("The numbers are {}, {} and {}", 69, 420, 1.0/3.0);
 
-    panic!("Oh no. Code panicked!");
+    #[cfg(test)]
+    test_main();
 
-    loop {}
+    loop { }
 }
