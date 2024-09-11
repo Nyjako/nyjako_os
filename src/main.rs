@@ -17,17 +17,14 @@ pub extern "C" fn _start() -> ! {
     test_main();
 
     println!("Yay, no crash so far!");
-    loop { 
-        use nyjako_os::print; 
-        print!("-"); 
-    }
+    nyjako_os::hlt_loop();
 }
 
 #[cfg(not(test))] // Normal mode panic handler
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
-    loop {}
+    nyjako_os::hlt_loop();
 }
 
 #[cfg(test)]
