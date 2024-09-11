@@ -7,6 +7,21 @@
 use core::panic::PanicInfo;
 use nyjako_os::println;
 
+#[no_mangle]
+pub extern "C" fn _start() -> ! {
+    println!("Hello, from {} - {}!", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
+    
+    nyjako_os::init();
+
+    x86_64::instructions::interrupts::int3();
+
+    #[cfg(test)]
+    test_main();
+
+    println!("Yay, no crash so far!");
+    loop { }
+}
+
 #[cfg(not(test))] // Normal mode panic handler
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
@@ -23,15 +38,4 @@ fn panic(info: &PanicInfo) -> ! {
 #[test_case]
 fn trivial_assertion() {
     assert_eq!(1, 1);
-}
-
-#[no_mangle]
-pub extern "C" fn _start() -> ! {
-    println!("Hello, from {} - {}!", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
-    println!("The numbers are {}, {} and {}", 69, 420, 1.0/3.0);
-
-    #[cfg(test)]
-    test_main();
-
-    loop { }
 }
