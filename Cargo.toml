@@ -13,6 +13,10 @@ panic = "abort"
 panic = "abort"
 
 [[test]]
+name = "stack_overflow"
+harness = false
+
+[[test]]
 name = "should_panic"
 harness = false
 
