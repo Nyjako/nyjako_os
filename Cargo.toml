@@ -2,6 +2,9 @@
 name = "nyjako_os"
 version = "0.1.0"
 edition = "2021"
+authors = [
+    "Kacper Tucholski <kacper.tucholski.kt@gmail.com>"
+]
 
 [profile.dev]
 panic = "abort"
